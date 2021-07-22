@@ -1,4 +1,5 @@
 import os
+from posixpath import split
 import textwrap
 import math
 
@@ -93,7 +94,8 @@ parse_mails("personal_mails")
 
 
 
-# MaxSeqLen has been added to the Java, so 512 should be possible
+# MaxSeqLen of 512 has been added, so it is possible to use it
+
 
 os.mkdir(os.getcwd() + "/personal_chunked_mails")    
 
@@ -102,16 +104,18 @@ for directory, _, files in os.walk("personal_mails"):
         filePathRead = os.path.join(os.getcwd(), "personal_mails", file)
         readFile = open(filePathRead, "r")
         data = readFile.read()
+        wordsInFile = data.split()
         
-        if len(data) > 512:
+        if len(wordsInFile) > 512:
             # print(file)
             # print(len(data))
-            inputChunks = textwrap.wrap(data, 512)
+            inputListWith512Words = wordsInFile[:512]
+            fullString = ''.join(inputListWith512Words)
 
-            for i in range(len(inputChunks)):
-                newPathSave = os.path.join(os.getcwd(), "personal_chunked_mails", str(i) + "-" + file)
-                file1 = open(newPathSave, "w")
-                file1.write(inputChunks[i])
+            newPathSave = os.path.join(os.getcwd(), "personal_chunked_mails", file)
+            file1 = open(newPathSave, "w")
+            file1.write(fullString)
+
         else:
             newPathSave = os.path.join(os.getcwd(), "personal_chunked_mails", file)            
             file1 = open(newPathSave, "w")
@@ -126,16 +130,18 @@ for directory, _, files in os.walk("non_personal_mails"):
         filePathRead = os.path.join(os.getcwd(), "non_personal_mails", file)
         readFile = open(filePathRead, "r")
         data = readFile.read()
+        wordsInFile = data.split()
         
-        if len(data) > 512:
+        if len(wordsInFile) > 512:
             # print(file)
             # print(len(data))
-            inputChunks = textwrap.wrap(data, 512)
+            inputListWith512Words = wordsInFile[:512]
+            fullString = ''.join(inputListWith512Words)
 
-            for i in range(len(inputChunks)):
-                newPathSave = os.path.join(os.getcwd(), "non_personal_chunked_mails", str(i) + "-" + file)
-                file1 = open(newPathSave, "w")
-                file1.write(inputChunks[i])
+            newPathSave = os.path.join(os.getcwd(), "non_personal_chunked_mails", file)
+            file1 = open(newPathSave, "w")
+            file1.write(fullString)
+
         else:
             newPathSave = os.path.join(os.getcwd(), "non_personal_chunked_mails", file)            
             file1 = open(newPathSave, "w")
